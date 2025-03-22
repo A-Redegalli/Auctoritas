@@ -1,13 +1,19 @@
 package it.aredegalli.auctoritas.model.role;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
 @Data
 @Entity
 @Table(name = "roles")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Role {
     @Id
     @GeneratedValue(generator = "UUID")

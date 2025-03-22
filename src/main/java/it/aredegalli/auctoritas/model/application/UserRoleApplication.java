@@ -3,7 +3,10 @@ package it.aredegalli.auctoritas.model.application;
 import it.aredegalli.auctoritas.model.role.Role;
 import it.aredegalli.auctoritas.model.user.User;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
@@ -11,6 +14,9 @@ import java.util.UUID;
 @Entity
 @Table(name = "users_roles_application",
         uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "application_id", "role_id"})})
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class UserRoleApplication {
     @Id
     @GeneratedValue(generator = "UUID")

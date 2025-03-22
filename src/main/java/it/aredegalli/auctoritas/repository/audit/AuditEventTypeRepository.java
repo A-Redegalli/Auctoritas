@@ -1,12 +1,11 @@
 package it.aredegalli.auctoritas.repository.audit;
 
 import it.aredegalli.auctoritas.model.audit.AuditEventType;
-import org.springframework.data.jpa.repository.JpaRepository;
+import it.aredegalli.auctoritas.repository.UUIDRepository;
 
 import java.util.Optional;
-import java.util.UUID;
 
-public interface AuditEventTypeRepository extends JpaRepository<AuditEventType, UUID> {
+public interface AuditEventTypeRepository extends UUIDRepository<AuditEventType> {
     Optional<AuditEventType> findByDescription(String description);
 
 }

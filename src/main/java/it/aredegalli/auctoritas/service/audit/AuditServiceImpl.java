@@ -14,6 +14,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
@@ -46,10 +47,11 @@ public class AuditServiceImpl implements AuditService {
 
     @Override
     public Map<String, Object> buildMetadata(Map<String, Object> metadata) {
-        metadata.put("ipv4", RequestUtil.getClientIp(httpServletRequest));
-        metadata.put("user-agent", httpServletRequest.getHeader("User-Agent"));
+        Map<String, Object> map = metadata != null ? new HashMap<>(metadata) : new HashMap<>();
+        map.put("ipv4", RequestUtil.getClientIp(httpServletRequest));
+        map.put("user-agent", httpServletRequest.getHeader("User-Agent"));
 
-        return metadata;
+        return map;
     }
 
     @Override

@@ -1,11 +1,12 @@
 package it.aredegalli.auctoritas.repository.application;
 
 import it.aredegalli.auctoritas.model.application.Application;
-import org.springframework.data.jpa.repository.JpaRepository;
+import it.aredegalli.auctoritas.repository.UUIDRepository;
 
 import java.util.Optional;
-import java.util.UUID;
 
-public interface ApplicationRepository extends JpaRepository<Application, UUID> {
+public interface ApplicationRepository extends UUIDRepository<Application> {
     Optional<Application> findByName(String name);
+
+    boolean existsByName(String name);
 }

@@ -1,7 +1,10 @@
 package it.aredegalli.auctoritas.model.role;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
@@ -9,6 +12,9 @@ import java.util.UUID;
 @Entity
 @Table(name = "permissions_role",
         uniqueConstraints = {@UniqueConstraint(columnNames = {"role_id", "permission_id"})})
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class PermissionRole {
     @Id
     @GeneratedValue(generator = "UUID")

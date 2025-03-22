@@ -51,8 +51,23 @@ security:
     allowed-origins: "*"
     allowed-methods: "*"
     allowed-headers: "*"
+  whitelist:
+    ips: ${AUCTORITAS_WHITELIST_IPS}
 
 # AES Encryption Key for sensitive data
 security.crypto:
   aes-secret-key: ${AUCTORITAS_AES_KEY}
 
+# Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, beans
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: always
+  info:
+    git:
+      mode: full

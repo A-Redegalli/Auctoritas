@@ -80,7 +80,7 @@ public class AuditAspect {
             }
         }
 
-        metadata.put("ipv4", httpRequest.getRemoteAddr());
+        metadata.put("ip", httpRequest.getRemoteAddr());
         metadata.put("user-agent", httpRequest.getHeader("User-Agent"));
 
         return metadata;

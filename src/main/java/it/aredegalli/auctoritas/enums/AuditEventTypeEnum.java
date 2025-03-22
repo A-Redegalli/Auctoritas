@@ -1,6 +1,10 @@
 package it.aredegalli.auctoritas.enums;
 
 public enum AuditEventTypeEnum {
+
+    API_ACCESS_DENIED,
+    API_ACCESS_GRANTED,
+
     APPLICATION_GET,
     APPLICATION_CREATE,
     APPLICATION_UPDATE,

@@ -48,7 +48,7 @@ public class AuditServiceImpl implements AuditService {
     @Override
     public Map<String, Object> buildMetadata(Map<String, Object> metadata) {
         Map<String, Object> map = metadata != null ? new HashMap<>(metadata) : new HashMap<>();
-        map.put("ipv4", RequestUtil.getClientIp(httpServletRequest));
+        map.put("ip", RequestUtil.getClientIp(httpServletRequest));
         map.put("user-agent", httpServletRequest.getHeader("User-Agent"));
 
         return map;

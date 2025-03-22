@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface UserRoleApplicationRepository extends UUIDRepository<UserRoleApplication> {
-    List<UserRoleApplication> findByUserIdAndApplicationId(UUID userId, UUID applicationId);
+    List<UserRoleApplication> findAllByUserIdAndApplicationId(UUID userId, UUID applicationId);
 
     boolean existsByUserIdAndRoleIdAndApplicationId(UUID userId, UUID roleId, UUID applicationId);
 

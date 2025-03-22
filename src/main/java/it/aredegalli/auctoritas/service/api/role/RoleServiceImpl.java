@@ -170,7 +170,7 @@ public class RoleServiceImpl implements RoleService {
     @EntityExistence(repository = ApplicationRepository.class, idParam = "applicationId")
     @Audit(event = AuditEventTypeEnum.USER_ROLE_GET, description = "Get roles by user and application")
     public List<RoleDto> getRolesByUserIdAndApplicationId(UUID userId, UUID applicationId) {
-        List<RoleDto> roles = this.userRoleApplicationRepository.findByUserIdAndApplicationId(userId, applicationId).stream()
+        List<RoleDto> roles = this.userRoleApplicationRepository.findAllByUserIdAndApplicationId(userId, applicationId).stream()
                 .map(userRoleApplication -> new RoleDto(userRoleApplication.getRole()))
                 .toList();
 

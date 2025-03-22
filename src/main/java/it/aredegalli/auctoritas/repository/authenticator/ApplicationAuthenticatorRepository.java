@@ -13,4 +13,6 @@ public interface ApplicationAuthenticatorRepository extends UUIDRepository<Appli
     Optional<ApplicationAuthenticator> findByApplicationId(UUID applicationId);
 
     boolean existsByApplicationIdAndAuthenticatorId(UUID applicationId, UUID authenticatorId);
+
+    Optional<ApplicationAuthenticator> findByApplicationIdAndAuthenticatorId(UUID applicationId, UUID authenticatorId);
 }

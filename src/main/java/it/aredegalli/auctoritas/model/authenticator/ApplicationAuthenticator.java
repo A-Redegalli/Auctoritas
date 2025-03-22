@@ -2,7 +2,10 @@ package it.aredegalli.auctoritas.model.authenticator;
 
 import it.aredegalli.auctoritas.model.application.Application;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -12,6 +15,9 @@ import java.util.UUID;
 @Entity
 @Table(name = "application_authenticators",
         uniqueConstraints = {@UniqueConstraint(columnNames = {"application_id", "authenticator_id"})})
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ApplicationAuthenticator {
     @Id
     @GeneratedValue(generator = "UUID")

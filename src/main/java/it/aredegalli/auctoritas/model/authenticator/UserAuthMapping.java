@@ -2,7 +2,10 @@ package it.aredegalli.auctoritas.model.authenticator;
 
 import it.aredegalli.auctoritas.model.user.User;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
@@ -10,6 +13,9 @@ import java.util.UUID;
 @Entity
 @Table(name = "user_auth_mappings",
         uniqueConstraints = {@UniqueConstraint(columnNames = {"authenticator_id", "external_user_id"})})
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserAuthMapping {
     @Id
     @GeneratedValue(generator = "UUID")

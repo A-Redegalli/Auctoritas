@@ -8,4 +8,8 @@ import java.util.UUID;
 
 public interface UserAuthMappingRepository extends UUIDRepository<UserAuthMapping> {
     Optional<UserAuthMapping> findByAuthenticatorIdAndExternalUserId(UUID authenticatorId, String externalUserId);
+
+    Optional<UserAuthMapping> findByUserId(UUID userId);
+
+    boolean existsByAuthenticatorIdAndExternalUserId(UUID authenticatorId, String externalUserId);
 }

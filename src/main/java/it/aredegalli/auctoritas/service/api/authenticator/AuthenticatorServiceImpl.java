@@ -16,8 +16,10 @@ import it.aredegalli.auctoritas.repository.authenticator.ApplicationAuthenticato
 import it.aredegalli.auctoritas.repository.authenticator.AuthenticatorRepository;
 import it.aredegalli.auctoritas.repository.authenticator.UserAuthMappingRepository;
 import it.aredegalli.auctoritas.repository.user.UserRepository;
+import it.aredegalli.auctoritas.security.encryption.EncryptionService;
 import it.aredegalli.auctoritas.service.audit.annotation.Audit;
 import it.aredegalli.auctoritas.service.validation.annotation.EntityExistence;
+import it.aredegalli.auctoritas.util.HashUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -35,6 +37,8 @@ public class AuthenticatorServiceImpl implements AuthenticatorService {
     private final UserAuthMappingRepository userAuthMappingRepository;
     private final ApplicationRepository applicationRepository;
     private final UserRepository userRepository;
+    private final EncryptionService encryptionService;
+    private final HashUtil hashUtil;
 
     @Override
     @EntityExistence(repository = AuthenticatorRepository.class, idParam = "authenticatorId")
@@ -56,7 +60,7 @@ public class AuthenticatorServiceImpl implements AuthenticatorService {
         AuthenticatorDto dto = AuthenticatorDto.builder().id(authenticator.getId())
                 .name(authenticator.getName())
                 .authType(authenticator.getAuthType())
-                .config(authenticator.getConfig())
+                .config(this.encryptionService.decrypt(authenticator.getConfig()))
                 .isActive(authenticator.isActive())
                 .build();
         log.info("[API] Retrieved authenticator by name '{}': {}", name, dto);
@@ -64,12 +68,29 @@ public class AuthenticatorServiceImpl implements AuthenticatorService {
     }
 
     @Override
+    @Audit(event = AuditEventTypeEnum.AUTHENTICATOR_GET_ALL, description = "Get all authenticators")
+    public List<AuthenticatorDto> getAllAuthenticators() {
+        return this.authenticatorRepository.findAll()
+                .stream()
+                .map(auth -> AuthenticatorDto.builder()
+                        .id(auth.getId())
+                        .name(auth.getName())
+                        .authType(auth.getAuthType())
+                        .config(this.encryptionService.decrypt(auth.getConfig()))
+                        .isActive(auth.isActive())
+                        .build())
+                .toList();
+    }
+
+    @Override
     @Audit(event = AuditEventTypeEnum.AUTHENTICATOR_CREATE, description = "Create authenticator")
     public UUID createAuthenticator(AuthenticatorSaveDto saveDto) {
+        String encryptedConfig = this.encryptionService.encrypt(saveDto.getConfig());
+
         Authenticator authenticator = Authenticator.builder()
                 .name(saveDto.getName())
                 .authType(saveDto.getAuthType())
-                .config(saveDto.getConfig())
+                .config(encryptedConfig)
                 .build();
         authenticator = authenticatorRepository.save(authenticator);
         log.info("[API] Created authenticator {} with dto: {}", authenticator.getId(), saveDto);
@@ -80,11 +101,12 @@ public class AuthenticatorServiceImpl implements AuthenticatorService {
     @EntityExistence(repository = AuthenticatorRepository.class, idParam = "id")
     @Audit(event = AuditEventTypeEnum.AUTHENTICATOR_UPDATE, description = "Update authenticator")
     public UUID updateAuthenticator(UUID id, AuthenticatorSaveDto saveDto) {
+        String encryptedConfig = this.encryptionService.encrypt(saveDto.getConfig());
         Authenticator authenticator = authenticatorRepository.findById(id).orElse(null);
         assert authenticator != null;
         authenticator.setName(saveDto.getName());
         authenticator.setAuthType(saveDto.getAuthType());
-        authenticator.setConfig(saveDto.getConfig());
+        authenticator.setConfig(encryptedConfig);
         authenticatorRepository.save(authenticator);
         log.info("[API] Updated authenticator {} with dto: {}", id, saveDto);
         return id;
@@ -122,7 +144,7 @@ public class AuthenticatorServiceImpl implements AuthenticatorService {
         UserAuthMapping mapping = UserAuthMapping.builder()
                 .user(user)
                 .authenticator(authenticator)
-                .externalUserId(externalUserId)
+                .externalUserId(hashUtil.hmacSha256(externalUserId))
                 .build();
         mapping = userAuthMappingRepository.save(mapping);
         log.info("[API] Created auth mapping {} for user {}", mapping.getId(), userId);
@@ -153,7 +175,13 @@ public class AuthenticatorServiceImpl implements AuthenticatorService {
     public List<ApplicationAuthenticatorDto> getAppAuthenticators(UUID applicationId) {
         List<ApplicationAuthenticatorDto> list = applicationAuthenticatorRepository.findByApplicationId(applicationId)
                 .stream()
-                .map(ApplicationAuthenticatorDto::new)
+                .map(auth -> ApplicationAuthenticatorDto.builder()
+                        .id(auth.getId())
+                        .authenticatorId(auth.getAuthenticator().getId())
+                        .config(this.encryptionService.decrypt(auth.getConfig()))
+                        .displayOrder(auth.getDisplayOrder())
+                        .isActive(auth.isActive())
+                        .build())
                 .toList();
         log.info("[API] Retrieved {} authenticators for app {}", list.size(), applicationId);
         return list;
@@ -172,7 +200,7 @@ public class AuthenticatorServiceImpl implements AuthenticatorService {
         ApplicationAuthenticator appAuth = ApplicationAuthenticator.builder()
                 .application(app)
                 .authenticator(auth)
-                .config(config)
+                .config(this.encryptionService.encrypt(config))
                 .displayOrder(displayOrder)
                 .isActive(true)
                 .build();

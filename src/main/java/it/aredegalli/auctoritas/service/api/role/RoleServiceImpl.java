@@ -1,6 +1,7 @@
 package it.aredegalli.auctoritas.service.api.role;
 
 import it.aredegalli.auctoritas.dto.role.PermissionDto;
+import it.aredegalli.auctoritas.dto.role.PermissionSaveDto;
 import it.aredegalli.auctoritas.dto.role.RoleDto;
 import it.aredegalli.auctoritas.dto.role.RoleSaveDto;
 import it.aredegalli.auctoritas.enums.AuditEventTypeEnum;
@@ -56,6 +57,18 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    @Audit(event = AuditEventTypeEnum.ROLE_GET_ALL, description = "Get all roles")
+    public List<RoleDto> getAllRoles() {
+        return this.roleRepository.findAll().stream().map(RoleDto::new).toList();
+    }
+
+    @Override
+    @Audit(event = AuditEventTypeEnum.PERMISSION_GET_ALL, description = "Get all permissions")
+    public List<PermissionDto> getAllPermissions() {
+        return this.permissionRepository.findAll().stream().map(PermissionDto::new).toList();
+    }
+
+    @Override
     @EntityExistence(repository = RoleRepository.class, idParam = "id")
     @Audit(event = AuditEventTypeEnum.ROLE_UPDATE, description = "Update Role")
     public UUID updateRole(UUID id, RoleSaveDto roleDto) {
@@ -88,7 +101,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     @EntityExistence(repository = PermissionRepository.class, idParam = "id")
     @Audit(event = AuditEventTypeEnum.PERMISSION_UPDATE, description = "Update Permission")
-    public UUID updatePermission(UUID id, PermissionDto permissionDto) {
+    public UUID updatePermission(UUID id, PermissionSaveDto permissionDto) {
         Permission permission = this.permissionRepository.findById(id).orElse(null);
 
         assert permission != null;
@@ -103,7 +116,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     @Audit(event = AuditEventTypeEnum.PERMISSION_CREATE, description = "Create Permission")
-    public UUID createPermission(PermissionDto permissionDto) {
+    public UUID createPermission(PermissionSaveDto permissionDto) {
         Permission permission = Permission.builder()
                 .name(permissionDto.getName())
                 .description(permissionDto.getDescription())

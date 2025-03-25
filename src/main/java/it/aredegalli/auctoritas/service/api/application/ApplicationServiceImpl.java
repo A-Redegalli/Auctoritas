@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 
@@ -31,6 +32,15 @@ public class ApplicationServiceImpl implements ApplicationService {
         return this.applicationRepository.findByName(name)
                 .map(ApplicationDto::new)
                 .orElse(null);
+    }
+
+    @Override
+    @Audit(event = AuditEventTypeEnum.APPLICATION_GET_ALL, description = "Get all applications")
+    public List<ApplicationDto> getAllApplications() {
+        return this.applicationRepository.findAll()
+                .stream()
+                .map(ApplicationDto::new)
+                .toList();
     }
 
     @Override

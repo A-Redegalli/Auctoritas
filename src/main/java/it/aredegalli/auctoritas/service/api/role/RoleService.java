@@ -1,6 +1,7 @@
 package it.aredegalli.auctoritas.service.api.role;
 
 import it.aredegalli.auctoritas.dto.role.PermissionDto;
+import it.aredegalli.auctoritas.dto.role.PermissionSaveDto;
 import it.aredegalli.auctoritas.dto.role.RoleDto;
 import it.aredegalli.auctoritas.dto.role.RoleSaveDto;
 
@@ -29,6 +30,20 @@ public interface RoleService {
     PermissionDto getPermissionById(UUID id);
 
     /**
+     * Retrieves a list of all roles.
+     *
+     * @return a list of RoleDto objects
+     */
+    List<RoleDto> getAllRoles();
+
+    /**
+     * Retrieves a list of all permissions.
+     *
+     * @return a list of PermissionDto objects
+     */
+    List<PermissionDto> getAllPermissions();
+
+    /**
      * Updates a role with the given ID.
      *
      * @param id      the UUID of the role
@@ -52,7 +67,7 @@ public interface RoleService {
      * @param permissionDto the PermissionDto object containing updated permission information
      * @return the UUID of the updated permission
      */
-    UUID updatePermission(UUID id, PermissionDto permissionDto);
+    UUID updatePermission(UUID id, PermissionSaveDto permissionDto);
 
     /**
      * Creates a new permission.
@@ -60,7 +75,7 @@ public interface RoleService {
      * @param permissionDto the PermissionDto object containing permission information
      * @return the UUID of the created permission
      */
-    UUID createPermission(PermissionDto permissionDto);
+    UUID createPermission(PermissionSaveDto permissionDto);
 
     /**
      * Retrieves a list of permissions by role ID.

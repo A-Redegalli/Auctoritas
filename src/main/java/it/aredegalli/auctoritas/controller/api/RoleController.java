@@ -2,6 +2,7 @@ package it.aredegalli.auctoritas.controller.api;
 
 import io.swagger.v3.oas.annotations.Operation;
 import it.aredegalli.auctoritas.dto.role.PermissionDto;
+import it.aredegalli.auctoritas.dto.role.PermissionSaveDto;
 import it.aredegalli.auctoritas.dto.role.RoleDto;
 import it.aredegalli.auctoritas.dto.role.RoleSaveDto;
 import it.aredegalli.auctoritas.service.api.role.RoleService;
@@ -31,6 +32,13 @@ public class RoleController {
     public ResponseEntity<RoleDto> getRoleById(@PathVariable @NotNull UUID id) {
         log.info("[API] getRoleById: {}", id);
         return ResponseEntity.ok(roleService.getRoleById(id));
+    }
+
+    @Operation(summary = "Get All Roles")
+    @GetMapping("/all")
+    public ResponseEntity<List<RoleDto>> getAllRoles() {
+        log.info("[API] getAllRoles");
+        return ResponseEntity.ok(roleService.getAllRoles());
     }
 
     @Operation(summary = "Create a new Role")
@@ -117,16 +125,23 @@ public class RoleController {
         return ResponseEntity.ok(roleService.getPermissionById(id));
     }
 
+    @Operation(summary = "Get All Permissions")
+    @GetMapping("/permission/all")
+    public ResponseEntity<List<PermissionDto>> getAllPermissions() {
+        log.info("[API] getAllPermissions");
+        return ResponseEntity.ok(roleService.getAllPermissions());
+    }
+
     @Operation(summary = "Create a new Permission")
     @PostMapping("/permission")
-    public ResponseEntity<UUID> createPermission(@Valid @RequestBody PermissionDto dto) {
+    public ResponseEntity<UUID> createPermission(@Valid @RequestBody PermissionSaveDto dto) {
         log.info("[API] createPermission: {}", dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(roleService.createPermission(dto));
     }
 
     @Operation(summary = "Update an existing Permission")
     @PutMapping("/permission/{id}")
-    public ResponseEntity<UUID> updatePermission(@PathVariable UUID id, @Valid @RequestBody PermissionDto dto) {
+    public ResponseEntity<UUID> updatePermission(@PathVariable UUID id, @Valid @RequestBody PermissionSaveDto dto) {
         log.info("[API] updatePermission {} with dto: {}", id, dto);
         return ResponseEntity.ok(roleService.updatePermission(id, dto));
     }

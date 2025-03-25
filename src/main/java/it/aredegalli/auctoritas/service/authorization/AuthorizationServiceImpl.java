@@ -15,7 +15,7 @@ import it.aredegalli.auctoritas.repository.authenticator.ApplicationAuthenticato
 import it.aredegalli.auctoritas.repository.authenticator.AuthenticatorRepository;
 import it.aredegalli.auctoritas.repository.authenticator.UserAuthMappingRepository;
 import it.aredegalli.auctoritas.repository.user.UserRepository;
-import it.aredegalli.auctoritas.service.audit.AuditService;
+import it.aredegalli.auctoritas.util.HashUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -37,21 +37,23 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     private final UserAuthMappingRepository userAuthMappingRepository;
     private final UserRepository userRepository;
     private final UserRoleApplicationRepository userRoleApplicationRepository;
-    private final AuditService auditService;
+    private final HashUtil hashUtil;
     private final AuthorizationHelper authorizationHelper;
 
     @Override
     @Transactional
     public AuthorizationResultDto authorizeAccess(String applicationName, String authenticatorName, String externalUserId) {
+        String hashedExternalUserId = hashUtil.hmacSha256(externalUserId);
+
         Map<String, Object> metadata = new HashMap<>();
         metadata.put("applicationName", applicationName);
         metadata.put("authenticatorName", authenticatorName);
-        metadata.put("externalUserId", externalUserId);
+        metadata.put("externalUserId", hashedExternalUserId);
 
         Authenticator authenticator = getActiveAuthenticator(authenticatorName, metadata);
         Application application = getApplication(applicationName, metadata);
         validateApplicationAuthenticator(application, authenticator);
-        User user = getOrCreateUser(authenticator, externalUserId, applicationName, metadata);
+        User user = getOrCreateUser(authenticator, hashedExternalUserId, applicationName, metadata);
         metadata.put("userId", user.getId());
 
         List<Role> roles = getUserRolesOrAssignDefault(user, application, applicationName, metadata);

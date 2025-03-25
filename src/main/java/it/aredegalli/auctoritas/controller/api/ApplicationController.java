@@ -40,6 +40,17 @@ public class ApplicationController {
         return ResponseEntity.status(HttpStatus.OK).body(applicationService.getApplicationByName(name));
     }
 
+    @Operation(summary = "Get All Applications", description = "Retrieve all applications in the system.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Applications found"),
+            @ApiResponse(responseCode = "404", description = "No applications found")
+    })
+    @GetMapping("/all")
+    public ResponseEntity<Iterable<ApplicationDto>> getAllApplications() {
+        log.info("[API] getAllApplications");
+        return ResponseEntity.status(HttpStatus.OK).body(applicationService.getAllApplications());
+    }
+
     @Operation(summary = "Create Application", description = "Create a new application entry in the system.")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Application created successfully"),

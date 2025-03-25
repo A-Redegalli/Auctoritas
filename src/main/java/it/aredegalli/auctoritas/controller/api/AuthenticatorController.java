@@ -41,6 +41,13 @@ public class AuthenticatorController {
         return ResponseEntity.ok(authenticatorService.getAuthenticatorByName(name));
     }
 
+    @Operation(summary = "Get all authenticators")
+    @GetMapping("/all")
+    public ResponseEntity<List<AuthenticatorDto>> getAllAuthenticators() {
+        log.info("[API] getAllAuthenticators");
+        return ResponseEntity.ok(authenticatorService.getAllAuthenticators());
+    }
+
     @Operation(summary = "Create a new authenticator")
     @PostMapping
     public ResponseEntity<UUID> createAuthenticator(@Valid @RequestBody AuthenticatorSaveDto dto) {

@@ -3,6 +3,7 @@ package it.aredegalli.auctoritas.config;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
+import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -22,5 +23,13 @@ public class OpenAPIConfig {
                                 .email("redegalli03@gmail.com")
                         )
                 );
+    }
+
+    @Bean
+    public GroupedOpenApi publicApi() {
+        return GroupedOpenApi.builder()
+                .group("public")
+                .pathsToMatch("/api/**", "/authorization/**")
+                .build();
     }
 }

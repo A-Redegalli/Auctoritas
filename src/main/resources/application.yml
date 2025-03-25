@@ -71,3 +71,17 @@ management:
   info:
     git:
       mode: full
+
+# Swagger OpenAPI
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+# HMAC
+hmac:
+  secret:
+    key: ${HMAC_SECRET_KEY}
+

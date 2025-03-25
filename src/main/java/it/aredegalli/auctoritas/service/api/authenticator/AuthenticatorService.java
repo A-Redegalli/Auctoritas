@@ -37,6 +37,14 @@ public interface AuthenticatorService {
     AuthenticatorDto getAuthenticatorByName(String name);
 
     /**
+     * Retrieves all authenticators.
+     *
+     * @return a list of AuthenticatorDto objects
+     */
+    @Audit(event = AuditEventTypeEnum.AUTHENTICATOR_GET_ALL, description = "Get all authenticators")
+    List<AuthenticatorDto> getAllAuthenticators();
+
+    /**
      * Creates a new authenticator.
      *
      * @param saveDto the data transfer object containing the authenticator details

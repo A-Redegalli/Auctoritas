@@ -23,7 +23,7 @@ import java.util.Map;
 public class HostRequestFilter extends OncePerRequestFilter {
 
     @Value("${security.whitelist.ips}")
-    private String whitelistIps; // CSV IPs
+    private String whitelistIps;
 
     private final AuditService auditService;
 

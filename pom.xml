@@ -10,7 +10,7 @@
     </parent>
     <groupId>it.aredegalli</groupId>
     <artifactId>auctoritas</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>Auctoritas</name>
     <description>Auctoritas is an independent and modular Access Control and Authorization System designed to manage
         users, roles, and permissions across multiple applications. It supports authentication mapping from external

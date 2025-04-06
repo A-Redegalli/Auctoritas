@@ -1,19 +1,21 @@
 # Stage 1: Build with Maven
-FROM maven:3.9-eclipse-temurin-17 AS builder
+FROM maven:3.9-eclipse-temurin-21 AS builder
+
 WORKDIR /app
 COPY . .
-RUN mvn clean package -DskipTests
 
-# Stage 2: Run with minimal JVM (distroless)
-FROM eclipse-temurin:17-jre-alpine
+# Costruisce un JAR eseguibile senza toccare il POM
+RUN mvn clean package spring-boot:repackage -DskipTests
+
+# Secondo stage: immagine leggera per esecuzione
+FROM eclipse-temurin:21-jre-alpine
 
 ENV PRAETOR_PROFILE=docker
 
-# App location
 WORKDIR /app
 
-# Copy JAR from previous stage
-COPY --from=builder /app/target/*.jar auctoritas-v.1.0.0.jar
+# Permette override da esterno (es. variabili o docker-compose)
+ENV JAVA_TOOL_OPTIONS="-Xmx128m -Xms64m -XX:+UseSerialGC"
 
-# Run the app
-ENTRYPOINT ["java", "-Xmx128m", "-Xms64m", "-XX:+UseSerialGC", "-jar", "auctoritas-v.1.0.0.jar"]
+ENTRYPOINT ["java", "-jar", "auctoritas.jar"]
+

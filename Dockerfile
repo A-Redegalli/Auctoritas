@@ -15,7 +15,11 @@ ENV PRAETOR_PROFILE=docker
 WORKDIR /app
 
 # Copia il JAR dallo stage precedente e lo rinomina
+<<<<<<< HEAD
 COPY --from=builder /app/target/*.jar auctoritas.jar
+=======
+COPY --from=builder /app/target/*.jar dominatus.jar
+>>>>>>> origin/main
 
 # Permette override da esterno (es. variabili o docker-compose)
 ENV JAVA_TOOL_OPTIONS="-Xmx128m -Xms64m -XX:+UseSerialGC"

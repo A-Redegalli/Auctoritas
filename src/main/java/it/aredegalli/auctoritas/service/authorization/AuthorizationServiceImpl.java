@@ -1,7 +1,6 @@
 package it.aredegalli.auctoritas.service.authorization;
 
 import it.aredegalli.auctoritas.dto.authorization.AuthorizationResultDto;
-import it.aredegalli.auctoritas.exception.NotFoundException;
 import it.aredegalli.auctoritas.model.application.Application;
 import it.aredegalli.auctoritas.model.application.UserRoleApplication;
 import it.aredegalli.auctoritas.model.authenticator.ApplicationAuthenticator;
@@ -16,6 +15,7 @@ import it.aredegalli.auctoritas.repository.authenticator.AuthenticatorRepository
 import it.aredegalli.auctoritas.repository.authenticator.UserAuthMappingRepository;
 import it.aredegalli.auctoritas.repository.user.UserRepository;
 import it.aredegalli.auctoritas.util.HashUtil;
+import it.aredegalli.common.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

@@ -1,8 +1,8 @@
 package it.aredegalli.auctoritas.service.validation.annotation;
 
-import it.aredegalli.auctoritas.exception.ConflictException;
-import it.aredegalli.auctoritas.exception.NotFoundException;
 import it.aredegalli.auctoritas.repository.UUIDRepository;
+import it.aredegalli.common.exception.ConflictException;
+import it.aredegalli.common.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;

@@ -35,6 +35,15 @@
     <properties>
         <java.version>21</java.version>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>aredegalli</id>
+            <name>aredegalli</name>
+            <url>https://mvn.aredegalli.it</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -81,6 +90,22 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>it.aredegalli.common</groupId>
+            <artifactId>exceptions</artifactId>
+            <version>1.0.0-beta</version>
+        </dependency>
+        <dependency>
+            <groupId>it.aredegalli.common</groupId>
+            <artifactId>validation</artifactId>
+            <version>1.0.0-beta</version>
+        </dependency>
+        <dependency>
+            <groupId>it.aredegalli.auctoritas</groupId>
+            <artifactId>models</artifactId>
+            <version>1.0.0-rc.0</version>
         </dependency>
 
     </dependencies>
